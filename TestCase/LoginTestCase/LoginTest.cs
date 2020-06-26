@@ -19,6 +19,7 @@ namespace LinkedinApp.LoginTestCase.TestCase
     {
          
         Credentails credentails = new Credentails();
+     
         public ExtentReports extent = null;
         public ExtentTest test = null;
 
@@ -49,6 +50,8 @@ namespace LinkedinApp.LoginTestCase.TestCase
             test=extent.CreateTest("ValidLogin").Info("Test Started");
             LoginPageObject login = new LoginPageObject(driver);
             test.Log(Status.Info,"Chrome Browser Launched");
+            //screenshot
+            String screenshotpath = Screenshot.Capture(driver, "valid login");
             login.LoginToLinkedin(credentails.email, credentails.password);
             test.Log(Status.Info,"Valid email and password is entered");
             String actualResult = driver.Url;
@@ -56,6 +59,7 @@ namespace LinkedinApp.LoginTestCase.TestCase
             String expectedResult = "https://www.linkedin.com/feed/";
             Assert.AreEqual(expectedResult, actualResult);
             test.Log(Status.Pass,"Test valid Login passed");
+            test.AddScreenCaptureFromPath(screenshotpath);
         }
 
         [Test]
@@ -64,10 +68,13 @@ namespace LinkedinApp.LoginTestCase.TestCase
             test = extent.CreateTest("Create new Post").Info("Test Started");
             LoginPageObject login = new LoginPageObject(driver);
             test.Log(Status.Info, "Chrome Browser Launched");
+            //screenshot
+            String screenshotpath = Screenshot.Capture(driver, "Add post");
             login.LoginToLinkedin(credentails.email, credentails.password);
             test.Log(Status.Info, "Valid email and password is entered");
             Article article = new Article(driver);
             article.CreatePost();
+            test.AddScreenCaptureFromPath(screenshotpath);
             test.Log(Status.Info, "Article is posted in Linkedin");
             String actualResult = driver.Url;
             String expected = "https://www.linkedin.com/home";
@@ -76,7 +83,11 @@ namespace LinkedinApp.LoginTestCase.TestCase
 
 
 
-
         }
     }
 }
+
+
+
+
+
